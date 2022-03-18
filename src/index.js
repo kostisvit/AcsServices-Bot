@@ -10,9 +10,9 @@ async function SayHello(context) {
     current_state: 'waiting_name'
 })
 
-  context.setState({
-    current_state: 'waiting_email'
-})
+//   context.setState({
+//     current_state: 'waiting_email'
+// })
 }
 
 const hiArray = [
@@ -21,10 +21,6 @@ const hiArray = [
   'hey'
 ]
 
-// const employeeInfo = [
-//   'phone',
-//   'mobile'
-// ]
 
 const employees = {
   'kostas': {
@@ -39,22 +35,31 @@ const employees = {
 async function Unknown(context) {
   if ( context.event.isText ) {
     const input = context.event.text.toLowerCase();
-    if ( context.state.current_state = 'waiting_name' && employees[input] ){
+    if ( context.state.current_state == 'waiting_name' && employees[input] ){
       await context.sendText(employees[input].tel);
+      
       await context.sendText('Something else?');
 
       context.setState({
-        current_state: 'waiting_name'
+        current_state: 'waiting_email',
+        // current_state: 'waiting_email',
+        employee: input
       })
-    } else if ( input === 'email') {
-      
-      
-      
+    } else if ( context.state.current_state == 'waiting_email' && input === 'email') {
+      const employee = context.state.employee;
+      const email = employees[employee].email;
+      await context.sendText(email);
 
       // console.log(employees.kostas.email);
-        
-
+      context.setState({
+        current_state: 'waiting_mobile',
+      }) 
+    } else if ( context.state.current_state == 'waiting_mobile' && input ==='mobile'){
+      const employee = context.state.employee;
+      const mobile = employees[employee].mobile;
+      await context.sendText(mobile);
     }
+
     else {
       await context.sendText(unknownResponse);
     }
@@ -64,7 +69,7 @@ async function Unknown(context) {
 module.exports = async function App(context) {
   if ( context.event.isText && hiArray.includes(context.event.text.toLowerCase())){
     return SayHello
-  }
+  } 
 
   return Unknown
 };
