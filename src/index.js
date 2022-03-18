@@ -27,6 +27,11 @@ const employees = {
     'tel': '27420-25537',
     'mobile': '6936486424',
     'email': 'kostasvit@acsservices.gr'
+  },
+  'john': {
+    'tel': '22220-55555',
+    'mobile': '6969696969',
+    'email': 'test@email.com'
   }
 }
 
